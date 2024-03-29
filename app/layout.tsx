@@ -8,18 +8,18 @@ import { SpeedInsights } from '@vercel/speed-insights/next';
 import { SandpackCSS } from './blog/[slug]/sandpack';
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://leerob.io'),
+  metadataBase: new URL('https://marcsnv.com'),
   title: {
-    default: 'Lee Robinson',
-    template: '%s | Lee Robinson',
+    default: 'Marc Casanova',
+    template: '%s | Marc Casanova',
   },
-  description: 'Developer, writer, and creator.',
+  description: 'Developer, ',
   openGraph: {
-    title: 'Lee Robinson',
+    title: 'Marc Casanova',
     description: 'Developer, writer, and creator.',
-    url: 'https://leerob.io',
-    siteName: 'Lee Robinson',
-    locale: 'en_US',
+    url: 'https://marcsnv.com',
+    siteName: 'Marc Casanova',
+    locale: 'es_ES',
     type: 'website',
   },
   robots: {
@@ -34,12 +34,8 @@ export const metadata: Metadata = {
     },
   },
   twitter: {
-    title: 'Lee Robinson',
+    title: 'Marc Casanova',
     card: 'summary_large_image',
-  },
-  verification: {
-    google: 'eZSdmzAXlLkKhNJzfgwDqWORghxnJ8qR9_CHdAh5-xw',
-    yandex: '14d2e73487fa6c71',
   },
 };
 

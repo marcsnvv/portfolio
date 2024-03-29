@@ -51,7 +51,7 @@ export default function WorkPage() {
             leading our product documentation team. My team created a{' '}
             <a href="https://nextjs.org/learn">new free course</a> to teach
             Next.js, which had 17 million page views that year.{' '}
-            <a href="https://twitter.com/leeerob/status/1608900031859527682">
+            <a href="https://twitter.com/Marcerob/status/1608900031859527682">
               I shipped.
             </a>{' '}
             I partnered with our open-source community, collaborating with
