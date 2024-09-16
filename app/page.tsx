@@ -117,7 +117,27 @@ async function Views({ slug }: { slug: string }) {
   return <ViewCounter allViews={views} slug={slug} />;
 }
 
-export default function Page() {
+export default async function Page() {
+  const apiKey = process.env.STOCKS_API_KEY;
+  const symbols = ['MSFT', 'NVDA'];
+  const responses = await Promise.all(
+    symbols.map(symbol =>
+      fetch(`https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=${symbol}&apikey=${apiKey}`)
+    )
+  );
+
+  const data = await Promise.all(responses.map(res => res.json()));
+  const prices = data.reduce((acc, stockData) => {
+    const symbol = stockData["Meta Data"]?.["2. Symbol"];
+    if (symbol && stockData["Time Series (Daily)"]) {
+      const latestDate = Object.keys(stockData["Time Series (Daily)"])[0];
+      acc[symbol] = parseFloat(stockData["Time Series (Daily)"][latestDate]["4. close"]);
+    }
+    return acc;
+  }, {});
+
+  console.log(prices)
+
   return (
     <section>
       <PreloadResources />
@@ -125,21 +145,46 @@ export default function Page() {
         hey, I'm Marc 👋
       </h1>
       <p className="prose prose-neutral dark:prose-invert text-justify">
-        {`When I was 15 I started to get interested in the digital world and programming. At 16, I sold my first "technological" company, called `}
+        {`Hi! I'm Marc, I started programming at the age of 14, out of curiosity, and when I was 16, I sold my first small SaaS company `}
+
         <span className="not-prose">
           <Badge href="https://copsneakmonitor.com/">
             <img src="/copsneak.png" alt="Copsneak" className="h-4" />
-            Copsneak
+            Copsneak Monitors
           </Badge>
         </span>
-        {`. This motivated me to start other projects, but none caught my attention, until one day, I decided to design a cap and show it to some colleagues. Most of them liked the idea and so did. And that's how I started `}
+
+        {`. So far, I've been creating small projects like `}
+
+        {/* WORDARTLY */}
+        <span className="not-prose">
+          <Badge href="https://wordarlty.archives.marcsnv.com/">
+            <img src="images/projects/wordartly.png" alt="WordArtly Archive" className="h-4" />
+            WordArtly
+          </Badge>
+        </span>
+
+        {`, an AI-powered image generation platform, `}
+
+        {/* VEC */}
+        <span className="not-prose">
+          <Badge href="https://vitaleatsclub.com/">
+            <img src="images/projects/vec.png" alt="VEC" className="h-4" />
+            Vital Eats Club
+          </Badge>
+        </span>
+
+        {`, an AI-powered recipe newsletter, `}
+
+        {/* SNAP89 */}
         <span className="not-prose">
           <Badge href="https://snap89.com/">
             <img src="/s89.png" alt="Snap 89" className="h-4" />
-            Snap89
+            Snap 89
           </Badge>
         </span>
-        {`. A personal project, a brand, that wants to provide value, connection, emotions, sensations and quality.`}
+
+        {`, a personal cap brand, and a few more! Here you can see a list of the projects`}
       </p>
       <div className="my-8 columns-2 gap-4 sm:columns-3">
         <div className="relative mb-4 h-40">
@@ -226,19 +271,19 @@ export default function Page() {
       <div className="my-8 flex w-full flex-col space-x-0 space-y-4 sm:flex-row sm:space-x-4 sm:space-y-0">
         <ChannelLink
           img={wordartly}
-          name="Wordartly"
+          name="Wordartly (Archive)"
           link="https://wordartly.com"
         />
         <ChannelLink
           img={cwf}
-          name="Coffee Work Finder"
-          link="https://coffeeworkfinder.com"
+          name="Cafewofi"
+          link="https://cafewofi.com"
         />
       </div>
       <div className="my-8 flex w-full flex-col space-x-0 space-y-4 sm:flex-row sm:space-x-4 sm:space-y-0">
         <ChannelLink
           img={flyconnects}
-          name="Fly Connects"
+          name="Fly Connects (Archive)"
           link="https://flyconnects.com"
         />
         <ChannelLink
@@ -249,7 +294,7 @@ export default function Page() {
       </div>
       <div className="prose prose-neutral dark:prose-invert">
         <p className='text-justify'>
-        In this little blog I will publish some things about my work and hobbies.
+          In this little blog I will publish some things about my work and hobbies.
         </p>
       </div>
       <div className="my-8 flex w-full flex-col space-y-4">
@@ -267,8 +312,10 @@ export default function Page() {
           Apart from entrepreneurship, I have also made some investments, these are some of them.
         </p>
       </div>
-      <div className="my-8 flex h-14 w-full flex-row space-x-2 overflow-x-auto">
-        <div className="flex lg:w-auto w-48 items-center justify-between rounded border border-neutral-200 bg-neutral-50 px-3 py-4 dark:border-neutral-700 dark:bg-neutral-800">
+
+      <div className="my-8 flex h-fit flex-row space-x-2 overflow-x-auto w-auto">
+        <div className="min-w-fit flex gap-4 items-center justify-between rounded border border-neutral-200 bg-neutral-50 px-3 py-1 dark:border-neutral-700 dark:bg-neutral-800">
+          {/* MSFT */}
           <Image
             alt="Microsoft logo"
             src="/images/invest/microsoft.webp"
@@ -280,9 +327,12 @@ export default function Page() {
             <span className="text-neutral-600 dark:text-neutral-300 text-xs">
               for $329
             </span>
+            <span className={`text-xs ${prices['MSFT'] > 329 ? 'text-green-500' : 'text-red-500'}`}>
+              {prices['MSFT'] > 329 ? `+${((prices['MSFT'] - 329) / 329 * 100).toFixed(2)}%` : `-(${((329 - prices['MSFT']) / 329 * 100).toFixed(2)}%)`}
+            </span>
           </div>
         </div>
-        <div className="flex lg:w-auto w-48 gap-4 items-center justify-between rounded border border-neutral-200 bg-neutral-50 px-3 py-4 dark:border-neutral-700 dark:bg-neutral-800">
+        <div className="min-w-fit flex lg:w-auto gap-4 items-center justify-between rounded border border-neutral-200 bg-neutral-50 px-3 py-1 dark:border-neutral-700 dark:bg-neutral-800">
           {/* NVIDIA */}
           <Image
             alt="NVIDIA logo"
@@ -293,11 +343,14 @@ export default function Page() {
           <div className="flex flex-col">
             <span>NVIDIA</span>
             <span className="text-neutral-600 dark:text-neutral-300 text-xs">
-              for $550
+              for $55
+            </span>
+            <span className={`text-xs ${prices['NVDA'] > 55 ? 'text-green-500' : 'text-red-500'}`}>
+              {prices['NVDA'] > 55 ? `+${((prices['NVDA'] - 55) / 55 * 100).toFixed(2)}%` : `-(${((55 - prices['NVDA']) / 55 * 100).toFixed(2)}%)`}
             </span>
           </div>
         </div>
-        <div className="flex lg:w-auto w-48 gap-4 items-center justify-between rounded border border-neutral-200 bg-neutral-50 px-3 py-4 dark:border-neutral-700 dark:bg-neutral-800">
+        <div className="min-w-fit flex lg:w-auto w-48 gap-4 items-center justify-between rounded border border-neutral-200 bg-neutral-50 px-3 py-1 dark:border-neutral-700 dark:bg-neutral-800">
           {/* DECENTRALAND */}
           <Image
             alt="Decentraland logo"
@@ -312,7 +365,7 @@ export default function Page() {
             </span>
           </div>
         </div>
-        <div className="flex lg:w-auto w-48 gap-4 items-center justify-between rounded border border-neutral-200 bg-neutral-50 px-3 py-4 dark:border-neutral-700 dark:bg-neutral-800">
+        <div className="min-w-fit flex lg:w-auto w-48 gap-4 items-center justify-between rounded border border-neutral-200 bg-neutral-50 px-3 py-1 dark:border-neutral-700 dark:bg-neutral-800">
           <Image
             alt="Avalanche logo"
             src="/images/invest/avalanche.png"
