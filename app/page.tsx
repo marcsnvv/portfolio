@@ -8,7 +8,8 @@ import vec from 'public/images/projects/vec.png';
 import wordartly from 'public/images/projects/wordartly.png';
 import cwf from 'public/images/projects/cwf.png';
 import flyconnects from 'public/images/projects/flyconnects.png';
-import snap89 from 'public/images/projects/snap89.png';
+import snap89 from 'public/images/projects/snap89.jpg';
+import rentin from 'public/images/projects/rentin.png';
 
 // Galeria de imagenes
 import duquesa from 'public/images/home/duquesa.jpg';
@@ -258,6 +259,13 @@ export default async function Page() {
       </div>
       <div className="my-8 flex w-full flex-col space-x-0 space-y-4 sm:flex-row sm:space-x-4 sm:space-y-0">
         <ChannelLink
+          img={rentin}
+          name="Rentin AI"
+          link="https://rentin.marcsnv.com"
+        />
+      </div>
+      <div className="my-8 flex w-full flex-col space-x-0 space-y-4 sm:flex-row sm:space-x-4 sm:space-y-0">
+        <ChannelLink
           img={copsneak}
           name="Copsneak Monitors"
           link="https://copsneakmonitor.com"
@@ -272,7 +280,7 @@ export default async function Page() {
         <ChannelLink
           img={wordartly}
           name="Wordartly (Archive)"
-          link="https://wordartly.com"
+          link="https://wordarlty.archives.marcsnv.com"
         />
         <ChannelLink
           img={cwf}
@@ -284,7 +292,7 @@ export default async function Page() {
         <ChannelLink
           img={flyconnects}
           name="Fly Connects (Archive)"
-          link="https://flyconnects.com"
+          link="https://flyconnects.archives.marcsnv.com"
         />
         <ChannelLink
           img={snap89}
@@ -304,7 +312,7 @@ export default async function Page() {
         />
         <BlogLink
           name="The two faces of young businesses"
-          slug="two-faces-of-young-businesses"
+          slug="two-sides-of-business"
         />
       </div>
       <div className="prose prose-neutral dark:prose-invert">
